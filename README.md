@@ -1,3 +1,5 @@
+**Changes made by Roman Kapitsa**
+
 ## 0. Intro
 
 While going through this training you will develop console `online store`. Each next task will append some functionality or flexibility to it; 
