@@ -3,7 +3,7 @@ import pl.coherent.domain.Category;
 
 
 public class PhoneCategory extends Category {
-    public PhoneCategory(String name) {
+    public PhoneCategory() {
         super("Phones");
     }
 }

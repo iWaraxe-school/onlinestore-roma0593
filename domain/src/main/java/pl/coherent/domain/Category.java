@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Category {
-    private List<Product> productList = new ArrayList<>();
+    private final List<Product> productList = new ArrayList<>();
     private final String name;
 
     public Category(String name) {
@@ -19,13 +19,9 @@ public class Category {
         return name;
     }
 
-    public void addProductToCategory(Product product) {
-        productList.add(product);
-    }
-
-    public String getInfo() {
-        return getName() +
-                " consists the following products " +
-                getProductList();
+    public void getProductsInfoForCategory() {
+        for (Product product : productList) {
+            System.out.println("- " + product.getName());
+        }
     }
 }

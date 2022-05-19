@@ -7,11 +7,11 @@ public class RandomStorePopulator {
     public String getName(String categoryName){
         String productName = null;
         switch (categoryName){
-            case "Bikes": productName = faker.company().logo();
+            case "Bikes": productName = faker.gameOfThrones().dragon();
             break;
             case "Phones": productName = faker.starTrek().location();
             break;
-            case "Milk": productName = faker.food().ingredient();
+            case "Milk": productName = faker.food().spice();
             break;
         }
         return productName;
