@@ -1,7 +1,5 @@
 package pl.coherent.domain;
 
-import pl.coherent.domain.categories.MilkCategory;
-
 import java.util.Objects;
 
 public class Product {
