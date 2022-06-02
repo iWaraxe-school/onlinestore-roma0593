@@ -1,13 +1,14 @@
+import XMLparser.ProductComparator;
 import org.reflections.Reflections;
 import pl.coherent.domain.Category;
 import pl.coherent.domain.Product;
 
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;;
 
 public class StoreHelper {
     public static final String CATEGORY_PATH = "pl.coherent.domain.categories";
     Store store;
-
     RandomStorePopulator populator = new RandomStorePopulator();
 
     public StoreHelper(Store store) {
@@ -15,11 +16,11 @@ public class StoreHelper {
     }
 
     public void fillCategoryByProduct(Category category){
-            category.getProductList().add(new Product(
-                    populator.getName(category.getName()),
-                    populator.getRate(),
-                    populator.getPrice())
-            );
+        category.getProductList().add(new Product(
+                populator.getName(category.getName()),
+                populator.getRate(),
+                populator.getPrice())
+        );
     }
 
     public void initializeCategoriesInStore() throws InstantiationException, IllegalAccessException {
@@ -49,4 +50,23 @@ public class StoreHelper {
         }
     }
 
+    public List<Product> gatherAllStoreProducts(){
+        List<Product> allProducts = new ArrayList<>();
+        for(Category category : store.getCategories()){
+            allProducts.addAll(category.getProductList());
+        }
+        return allProducts;
+    }
+
+    public List<Product> getSortedProducts(List<Product> productList){
+        productList.sort(new ProductComparator());
+        return productList;
+    }
+
+    public List<Product> getTop5ByPrice(List<Product> productList){
+        return productList.stream()
+                .sorted((o1, o2) -> Double.compare(o2.getPrice(), o1.getPrice()))
+                .collect(Collectors.toList())
+                .subList(0, 4);
+    }
 }
