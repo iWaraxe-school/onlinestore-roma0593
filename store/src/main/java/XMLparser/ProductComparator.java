@@ -2,8 +2,6 @@ package XMLparser;
 import pl.coherent.domain.Product;
 import java.util.*;
 
-
-
 public class ProductComparator implements Comparator<Product> {
 
     XMLParser parser = new XMLParser();
