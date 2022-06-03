@@ -1,8 +1,9 @@
 package pl.coherent.domain;
 
+import java.util.Comparator;
 import java.util.Objects;
 
-public class Product {
+public class Product{
     private final String name;
     private int rate;
     private double price;
@@ -35,9 +36,11 @@ public class Product {
 
     @Override
     public String toString() {
-        return getName() + " " +
-                getPrice() + " " +
-                getRate();
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", rate=" + rate +
+                ", price=" + price +
+                '}';
     }
 
     @Override
@@ -52,6 +55,7 @@ public class Product {
     public int hashCode() {
         return Objects.hash(name);
     }
+
 }
 
 

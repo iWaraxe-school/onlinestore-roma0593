@@ -10,9 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class XMLParser {
-    public static final String XMLPATH = "src/main/resources/config.xml";
+    public static final String XMLPATH = "store/src/main/resources/config.xml";
 
-    public Map<String, String> fieldSortOrderMap() {
+    public Map<String, String> getFieldSortOrderMap() {
         Map<String, String> fieldSortDirectionMap = new LinkedHashMap<>();
 
         try {
