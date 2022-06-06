@@ -1,6 +1,4 @@
 package pl.coherent.domain;
-
-import java.util.Comparator;
 import java.util.Objects;
 
 public class Product{
@@ -36,11 +34,7 @@ public class Product{
 
     @Override
     public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
-                ", rate=" + rate +
-                ", price=" + price +
-                '}';
+        return String.format("%-30s \t%d \t%10s", name, rate, price);
     }
 
     @Override
