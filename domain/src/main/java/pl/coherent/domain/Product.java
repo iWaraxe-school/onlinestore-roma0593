@@ -1,10 +1,7 @@
 package pl.coherent.domain;
-
-import pl.coherent.domain.categories.MilkCategory;
-
 import java.util.Objects;
 
-public class Product {
+public class Product{
     private final String name;
     private int rate;
     private double price;
@@ -37,9 +34,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return getName() + " " +
-                getPrice() + " " +
-                getRate();
+        return String.format("%-30s \t%d \t%10s", name, rate, price);
     }
 
     @Override
@@ -54,6 +49,7 @@ public class Product {
     public int hashCode() {
         return Objects.hash(name);
     }
+
 }
 
 
