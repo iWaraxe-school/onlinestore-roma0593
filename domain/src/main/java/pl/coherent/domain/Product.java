@@ -6,9 +6,17 @@ public class Product{
     private int rate;
     private double price;
 
-    public Product(String name, int rate, double price) {
+    private Product(String name, int rate, double price){
         this.name = name;
         this.rate = rate;
+        this.price = price;
+    }
+
+    public void setRate(int rate) {
+        this.rate = rate;
+    }
+
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -22,14 +30,6 @@ public class Product{
 
     public double getPrice() {
         return price;
-    }
-
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     @Override
@@ -50,6 +50,30 @@ public class Product{
         return Objects.hash(name);
     }
 
+    public static class Builder{
+        private String name;
+        private int rate;
+        private double price;
+
+        public Builder setName(String name){
+            this.name = name;
+            return this;
+        }
+
+        public Builder setRate(int rate){
+            this.rate = rate;
+            return this;
+        }
+
+        public Builder setPrice(double price){
+            this.price = price;
+            return this;
+        }
+
+        public Product build(){
+            return new Product(name, rate, price);
+        }
+    }
 }
 
 
