@@ -16,11 +16,11 @@ public class StoreHelper {
     }
 
     public void fillCategoryByProduct(Category category){
-        category.getProductList().add(new Product(
-                populator.getName(category.getName()),
-                populator.getRate(),
-                populator.getPrice())
-        );
+        category.getProductList().add(new Product.Builder()
+                .setName(populator.getName(category.getName()))
+                .setRate(populator.getRate())
+                .setPrice(populator.getPrice())
+                .build());
     }
 
     public void initializeCategoriesInStore() throws InstantiationException, IllegalAccessException {
@@ -69,4 +69,5 @@ public class StoreHelper {
                 .collect(Collectors.toList())
                 .subList(0, 4);
     }
+
 }
