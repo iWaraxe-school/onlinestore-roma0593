@@ -6,7 +6,7 @@ import pl.coherent.domain.Product;
 import java.util.*;
 import java.util.stream.Collectors;;
 
-public class StoreHelper {
+public class StoreHelper{
     public static final String CATEGORY_PATH = "pl.coherent.domain.categories";
     Store store;
     RandomStorePopulator populator = new RandomStorePopulator();
@@ -69,5 +69,4 @@ public class StoreHelper {
                 .collect(Collectors.toList())
                 .subList(0, 4);
     }
-
 }
