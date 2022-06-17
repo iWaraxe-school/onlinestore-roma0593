@@ -1,5 +1,5 @@
 public enum Commands {
-    SORT("sort"), TOP5("top"), QUIT("quit");
+    SORT("sort"), TOP5("top"), QUIT("quit"), PICK("pick products");
 
     private final String value;
 

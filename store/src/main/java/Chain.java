@@ -1,16 +1,19 @@
 import pl.coherent.domain.Product;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 
 public class Chain {
+    private final StoreHelper storeHelper = new StoreHelper(Store.getStore());
+    private final BlockingQueue<Product> createdOrder;
     CommandProcessor chain;
-    StoreHelper storeHelper = new StoreHelper(Store.getStore());
 
-    public Chain(){
+    public Chain(BlockingQueue<Product> createdOrder) {
+        this.createdOrder = createdOrder;
         buildChain();
     }
 
     private void buildChain(){
-        chain = new SortProcessor(new Top5Processor(new QuitProcessor(new NoSuchComProcessor(null))));
+        chain = new SortProcessor(new Top5Processor(new QuitProcessor(new PickProductsProcessor(new NoSuchComProcessor(null)))));
     }
 
     public boolean process(String command, List<Product> productList) {
@@ -28,6 +31,20 @@ public class Chain {
             if(nextProcessor != null)
                 return nextProcessor.process(command, productList);
             return false;
+        }
+    }
+    class PickProductsProcessor extends CommandProcessor{
+        public PickProductsProcessor(CommandProcessor nextProcessor) {
+            super(nextProcessor);
+        }
+
+        public boolean process(String command, List<Product> productList){
+            if(command.equalsIgnoreCase(Commands.PICK.getValue())) {
+                new Thread(new ProductOrderExecutor(productList, createdOrder)).start();
+                return true;
+            } else {
+                return super.process(command, productList);
+            }
         }
     }
 
@@ -87,6 +104,7 @@ public class Chain {
         public boolean process(String command, List<Product> productList){
             if(!command.equalsIgnoreCase(Commands.SORT.getValue()) &&
                     !command.equalsIgnoreCase(Commands.TOP5.getValue()) &&
+                    !command.equalsIgnoreCase(Commands.PICK.getValue()) &&
                     !command.equalsIgnoreCase(Commands.QUIT.getValue())) {
                 System.out.println("\nSorry, there is no such command. Try something else");
                 return true;
