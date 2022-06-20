@@ -4,6 +4,6 @@ import pl.coherent.domain.Category;
 
 public class MilkCategory extends Category {
     public MilkCategory() {
-        super("Milk");
+        super("milk");
     }
 }

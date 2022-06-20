@@ -31,7 +31,7 @@ public class StoreApp {
 
         boolean runIndicator = true;
         while (runIndicator){
-            System.out.println("\n====== Enter command (sort, top, quit, select products): =======");
+            System.out.println("\n====== Enter command (sort, top, quit, pick products): =======");
 
             Chain chain = new Chain(selectedProductOrder);
             Scanner scanner = new Scanner(System.in);
