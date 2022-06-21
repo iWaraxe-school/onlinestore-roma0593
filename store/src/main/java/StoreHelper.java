@@ -1,3 +1,5 @@
+import DB.DbTableCreation;
+import DB.MySQLConnect;
 import XMLparser.ProductComparator;
 import lombok.SneakyThrows;
 import pl.coherent.domain.Category;
@@ -5,22 +7,19 @@ import pl.coherent.domain.Product;
 
 import java.sql.*;
 import java.util.*;
-import java.util.stream.Collectors;;
+import java.util.stream.Collectors;
 
 public class StoreHelper{
-    public static final String MYSQL_CON_URL = "jdbc:mysql://localhost:3306/onlinestore?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC";
-    public static final String MYSQL_USER = "root";
-    public static final String MYSQL_PASSWORD= "Touchnet#1";
     public static final String CATEGORY_NAME_SELECTOR_QUERY = "SELECT name FROM categories";
     public static final String CATEGORY_ID_SELECTOR_QUERY = "SELECT id FROM categories WHERE name=?";
     public static final String PRODUCT_INSERTION_QUERY = "INSERT INTO products (name, rate, price, category_id) VALUES (?,?,?,?)";
 
-    Connection connection;
     PreparedStatement statement;
     ResultSet resultSet;
-
     Store store;
     RandomStorePopulator populator = new RandomStorePopulator();
+    MySQLConnect mySQLConnect = new MySQLConnect();
+    DbTableCreation dbTableCreation = DbTableCreation.getDbTableCreation();
 
     public StoreHelper(Store store) {
         this.store = store;
@@ -28,8 +27,7 @@ public class StoreHelper{
 
     @SneakyThrows
     public void fillCategoryByProduct(Category category){
-        connection = DriverManager.getConnection(MYSQL_CON_URL, MYSQL_USER, MYSQL_PASSWORD);
-        statement = connection.prepareStatement(CATEGORY_ID_SELECTOR_QUERY);
+        statement = mySQLConnect.connect().prepareStatement(CATEGORY_ID_SELECTOR_QUERY);
         statement.setString(1, category.getName());
         resultSet = statement.executeQuery();
         resultSet.next();
@@ -43,12 +41,13 @@ public class StoreHelper{
 
         category.getProductList().add(product);
         insertProductIntoDB(product);
+        mySQLConnect.disconnect();
     }
 
     @SneakyThrows
     private void insertProductIntoDB(Product product){
-        connection = DriverManager.getConnection(MYSQL_CON_URL, MYSQL_USER, MYSQL_PASSWORD);
-        statement = connection.prepareStatement(PRODUCT_INSERTION_QUERY);
+        dbTableCreation.createProductsTable();
+        statement = mySQLConnect.connect().prepareStatement(PRODUCT_INSERTION_QUERY);
 
         statement.setString(1, product.getName());
         statement.setInt(2, product.getRate());
@@ -56,18 +55,19 @@ public class StoreHelper{
         statement.setDouble(4, product.getCategoryId());
 
         statement.executeUpdate();
+        mySQLConnect.disconnect();
     }
 
     @SneakyThrows
     public void initializeCategoriesInStore() {
-        connection = DriverManager.getConnection(MYSQL_CON_URL, MYSQL_USER, MYSQL_PASSWORD);
-
-        statement = connection.prepareStatement(CATEGORY_NAME_SELECTOR_QUERY);
+        dbTableCreation.createAndFillCategoriesTable();
+        statement = mySQLConnect.connect().prepareStatement(CATEGORY_NAME_SELECTOR_QUERY);
         resultSet = statement.executeQuery();
         while (resultSet.next()){
             Category category = new Category(resultSet.getString("name"));
             store.addCategoryToStore(category);
         }
+        mySQLConnect.disconnect();
     }
 
     public void getStoreInfo() {
