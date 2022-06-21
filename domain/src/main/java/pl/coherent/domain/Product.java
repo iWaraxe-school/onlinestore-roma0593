@@ -5,11 +5,13 @@ public class Product{
     private final String name;
     private int rate;
     private double price;
+    private final int categoryId;
 
-    private Product(String name, int rate, double price){
+    private Product(String name, int rate, double price, int categoryId){
         this.name = name;
         this.rate = rate;
         this.price = price;
+        this.categoryId = categoryId;
     }
 
     public void setRate(int rate) {
@@ -30,6 +32,10 @@ public class Product{
 
     public double getPrice() {
         return price;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
     }
 
     @Override
@@ -54,6 +60,7 @@ public class Product{
         private String name;
         private int rate;
         private double price;
+        private int categoryId;
 
         public Builder setName(String name){
             this.name = name;
@@ -70,8 +77,13 @@ public class Product{
             return this;
         }
 
+        public Builder setCategoryId(int categoryId){
+            this.categoryId = categoryId;
+            return this;
+        }
+
         public Product build(){
-            return new Product(name, rate, price);
+            return new Product(name, rate, price, categoryId);
         }
     }
 }

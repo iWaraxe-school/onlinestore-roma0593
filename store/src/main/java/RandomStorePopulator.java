@@ -1,17 +1,16 @@
 import com.github.javafaker.Faker;
 
-
 public class RandomStorePopulator {
     Faker faker = new Faker();
 
     public String getName(String categoryName){
         String productName = null;
         switch (categoryName){
-            case "Bikes": productName = faker.gameOfThrones().dragon();
+            case "bike": productName = faker.gameOfThrones().dragon();
             break;
-            case "Phones": productName = faker.starTrek().location();
+            case "phone": productName = faker.starTrek().location();
             break;
-            case "Milk": productName = faker.food().spice();
+            case "milk": productName = faker.food().spice();
             break;
         }
         return productName;

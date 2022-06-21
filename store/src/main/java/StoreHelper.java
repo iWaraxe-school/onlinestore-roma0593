@@ -1,36 +1,73 @@
+import DB.DbTableCreation;
+import DB.MySQLConnect;
 import XMLparser.ProductComparator;
-import org.reflections.Reflections;
+import lombok.SneakyThrows;
 import pl.coherent.domain.Category;
 import pl.coherent.domain.Product;
 
+import java.sql.*;
 import java.util.*;
-import java.util.stream.Collectors;;
+import java.util.stream.Collectors;
 
 public class StoreHelper{
-    public static final String CATEGORY_PATH = "pl.coherent.domain.categories";
+    public static final String CATEGORY_NAME_SELECTOR_QUERY = "SELECT name FROM categories";
+    public static final String CATEGORY_ID_SELECTOR_QUERY = "SELECT id FROM categories WHERE name=?";
+    public static final String PRODUCT_INSERTION_QUERY = "INSERT INTO products (name, rate, price, category_id) VALUES (?,?,?,?)";
+
+    PreparedStatement statement;
+    ResultSet resultSet;
     Store store;
     RandomStorePopulator populator = new RandomStorePopulator();
+    MySQLConnect mySQLConnect = new MySQLConnect();
+    DbTableCreation dbTableCreation = DbTableCreation.getDbTableCreation();
 
     public StoreHelper(Store store) {
         this.store = store;
     }
 
+    @SneakyThrows
     public void fillCategoryByProduct(Category category){
-        category.getProductList().add(new Product.Builder()
+        statement = mySQLConnect.connect().prepareStatement(CATEGORY_ID_SELECTOR_QUERY);
+        statement.setString(1, category.getName());
+        resultSet = statement.executeQuery();
+        resultSet.next();
+
+        Product product = new Product.Builder()
                 .setName(populator.getName(category.getName()))
                 .setRate(populator.getRate())
                 .setPrice(populator.getPrice())
-                .build());
+                .setCategoryId(resultSet.getInt("id"))
+                .build();
+
+        category.getProductList().add(product);
+        insertProductIntoDB(product);
+        mySQLConnect.disconnect();
     }
 
-    public void initializeCategoriesInStore() throws InstantiationException, IllegalAccessException {
-        Reflections reflections = new Reflections(CATEGORY_PATH);
-        Set<Class<? extends Category>> subTypes = reflections.getSubTypesOf(Category.class);
+    @SneakyThrows
+    private void insertProductIntoDB(Product product){
+        dbTableCreation.createProductsTable();
+        statement = mySQLConnect.connect().prepareStatement(PRODUCT_INSERTION_QUERY);
 
-        for (Class<? extends Category> subType : subTypes) {
-            Category category = subType.newInstance();
+        statement.setString(1, product.getName());
+        statement.setInt(2, product.getRate());
+        statement.setDouble(3, product.getPrice());
+        statement.setDouble(4, product.getCategoryId());
+
+        statement.executeUpdate();
+        mySQLConnect.disconnect();
+    }
+
+    @SneakyThrows
+    public void initializeCategoriesInStore() {
+        dbTableCreation.createAndFillCategoriesTable();
+        statement = mySQLConnect.connect().prepareStatement(CATEGORY_NAME_SELECTOR_QUERY);
+        resultSet = statement.executeQuery();
+        while (resultSet.next()){
+            Category category = new Category(resultSet.getString("name"));
             store.addCategoryToStore(category);
         }
+        mySQLConnect.disconnect();
     }
 
     public void getStoreInfo() {
