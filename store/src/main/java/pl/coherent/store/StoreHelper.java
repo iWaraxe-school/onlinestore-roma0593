@@ -1,6 +1,8 @@
-import DB.DbTableCreation;
-import DB.MySQLConnect;
-import XMLparser.ProductComparator;
+package pl.coherent.store;
+
+import pl.coherent.store.DB.DbTableCreation;
+import pl.coherent.store.DB.MySQLConnect;
+import pl.coherent.store.XMLParser.ProductComparator;
 import lombok.SneakyThrows;
 import pl.coherent.domain.Category;
 import pl.coherent.domain.Product;
@@ -27,6 +29,7 @@ public class StoreHelper{
 
     @SneakyThrows
     public void fillCategoryByProduct(Category category){
+
         statement = mySQLConnect.connect().prepareStatement(CATEGORY_ID_SELECTOR_QUERY);
         statement.setString(1, category.getName());
         resultSet = statement.executeQuery();
@@ -61,6 +64,7 @@ public class StoreHelper{
     @SneakyThrows
     public void initializeCategoriesInStore() {
         dbTableCreation.createAndFillCategoriesTable();
+
         statement = mySQLConnect.connect().prepareStatement(CATEGORY_NAME_SELECTOR_QUERY);
         resultSet = statement.executeQuery();
         while (resultSet.next()){

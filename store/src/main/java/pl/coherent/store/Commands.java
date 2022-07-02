@@ -1,3 +1,5 @@
+package pl.coherent.store;
+
 public enum Commands {
     SORT("sort"), TOP5("top"), QUIT("quit"), PICK("pick products");
 

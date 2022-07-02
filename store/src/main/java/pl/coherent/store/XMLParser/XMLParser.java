@@ -1,4 +1,4 @@
-package XMLparser;
+package pl.coherent.store.XMLParser;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 

@@ -1,4 +1,4 @@
-package XMLparser;
+package pl.coherent.store.XMLParser;
 import pl.coherent.domain.Product;
 import java.util.*;
 

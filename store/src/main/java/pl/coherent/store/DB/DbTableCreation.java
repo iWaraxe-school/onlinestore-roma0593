@@ -1,4 +1,4 @@
-package DB;
+package pl.coherent.store.DB;
 
 import lombok.SneakyThrows;
 import java.sql.Statement;
