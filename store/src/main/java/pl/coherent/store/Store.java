@@ -1,3 +1,5 @@
+package pl.coherent.store;
+
 import pl.coherent.domain.Category;
 
 import java.util.ArrayList;

@@ -1,3 +1,5 @@
+package pl.coherent.store;
+
 import lombok.SneakyThrows;
 import pl.coherent.domain.Product;
 import java.util.TimerTask;

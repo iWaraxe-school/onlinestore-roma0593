@@ -1,3 +1,5 @@
+package pl.coherent.store;
+
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import pl.coherent.domain.Product;
@@ -24,6 +26,7 @@ public class ProductOrderExecutor implements Runnable{
     public void run() {
         int min = 1;
         int max = 30;
+
         Random random = new Random();
         int randomInt = random.nextInt(max - min + 1) + min;
         System.out.println(Thread.currentThread().getName() + " has been started");

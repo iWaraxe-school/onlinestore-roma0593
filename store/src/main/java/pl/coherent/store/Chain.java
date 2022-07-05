@@ -1,4 +1,8 @@
+package pl.coherent.store;
+
 import pl.coherent.domain.Product;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
@@ -7,7 +11,7 @@ public class Chain {
     private final BlockingQueue<Product> createdOrder;
     CommandProcessor chain;
 
-    public Chain(BlockingQueue<Product> createdOrder) {
+    public Chain(BlockingQueue<Product> createdOrder) throws IOException {
         this.createdOrder = createdOrder;
         buildChain();
     }
@@ -33,6 +37,7 @@ public class Chain {
             return false;
         }
     }
+
     class PickProductsProcessor extends CommandProcessor{
         public PickProductsProcessor(CommandProcessor nextProcessor) {
             super(nextProcessor);

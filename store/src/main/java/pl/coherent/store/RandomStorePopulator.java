@@ -1,3 +1,5 @@
+package pl.coherent.store;
+
 import com.github.javafaker.Faker;
 
 public class RandomStorePopulator {
